@@ -1,0 +1,40 @@
+1. Install kamailio
+	configure kamailio.cfg
+# Module parameters
+	db_url for dispatcher
+	ds_ping_from for dispatcher
+	reg_contact_addr for uac
+	reg_db_url for uac
+
+# Variables in request route section
+	$avp(customerpbxip)="10.0.5.4";
+	$avp(sip1)="10.0.5.7";
+	$avp(sip2)="10.0.5.5";
+
+#TRUNKAUTH variables
+	$avp(auser) = "kam";
+	$avp(apass) = "kam";
+2. Install rtpengine
+	copy config file from this repository
+3. Install mysql server (or use remote one)
+	- load database dump from this repository, example data is allready inside table uacreg
+	- configure outbound destination server parameters in uac_reg table using the examples inside
+4. Configure syslog to log call CDRS into separate file 
+	/etc/syslog.conf
+	local2.*            -/var/log/cdrs.log
+
+Example data:
+10.0.5.4 ip of your main SIP server
+10.0.5.6 ip of kamailio voip proxy
+10.0.5.5 ip of secondary SIP server from your provider
+10.0.5.7 ip of primary SIP server form your provider
+registration user/pass is kam/kam
+
+
+Check dispatcher status for routing:
+kamcmd dispatcher.list
+
+
+
+
+
