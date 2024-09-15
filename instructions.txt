@@ -1,5 +1,5 @@
 1. Install kamailio
-	configure kamailio.cfg
+	- configure kamailio.cfg
 # Module parameters
 	db_url for dispatcher
 	ds_ping_from for dispatcher
@@ -14,13 +14,16 @@
 #TRUNKAUTH variables
 	$avp(auser) = "kam";
 	$avp(apass) = "kam";
+
+	- configure kamctlrc file for db access
+
 2. Install rtpengine
-	copy config file from this repository
+	- copy config file from this repository
 3. Install mysql server (or use remote one)
 	- load database dump from this repository, example data is allready inside table uacreg
 	- configure outbound destination server parameters in uac_reg table using the examples inside
 4. Configure syslog to log call CDRS into separate file 
-	/etc/syslog.conf
+	- /etc/syslog.conf
 	local2.*            -/var/log/cdrs.log
 
 Example data:
