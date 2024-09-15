@@ -56,7 +56,15 @@ CREATE TABLE `acc_cdrs` (
   `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
   `start_time` datetime NOT NULL DEFAULT '2000-01-01 00:00:00',
   `end_time` datetime NOT NULL DEFAULT '2000-01-01 00:00:00',
-  `duration` float(10,3) NOT NULL DEFAULT 0.000,
+  `duration` float(10,3) DEFAULT NULL,
+  `src_user` varchar(32) DEFAULT NULL,
+  `src_domain` varchar(64) DEFAULT NULL,
+  `src_ip` varchar(39) DEFAULT NULL,
+  `dst_user` varchar(64) DEFAULT NULL,
+  `dst_ouser` varchar(64) DEFAULT NULL,
+  `dst_domain` varchar(64) DEFAULT NULL,
+  `callid` varchar(128) DEFAULT NULL,
+  `dst_ip` varchar(39) DEFAULT NULL,
   PRIMARY KEY (`id`),
   KEY `start_time_idx` (`start_time`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci;
@@ -460,7 +468,7 @@ CREATE TABLE `dispatcher` (
   `attrs` varchar(128) NOT NULL DEFAULT '',
   `description` varchar(64) NOT NULL DEFAULT '',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -469,6 +477,9 @@ CREATE TABLE `dispatcher` (
 
 LOCK TABLES `dispatcher` WRITE;
 /*!40000 ALTER TABLE `dispatcher` DISABLE KEYS */;
+INSERT INTO `dispatcher` VALUES
+(1,1,'sip:10.0.5.7:5060',0,1,'','SIP Provider'),
+(2,1,'sip:10.0.5.5:5060',0,0,'','SIP Provider2');
 /*!40000 ALTER TABLE `dispatcher` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -1806,7 +1817,7 @@ CREATE TABLE `uacreg` (
   `socket` varchar(128) NOT NULL DEFAULT '',
   PRIMARY KEY (`id`),
   UNIQUE KEY `l_uuid_idx` (`l_uuid`)
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -1816,7 +1827,8 @@ CREATE TABLE `uacreg` (
 LOCK TABLES `uacreg` WRITE;
 /*!40000 ALTER TABLE `uacreg` DISABLE KEYS */;
 INSERT INTO `uacreg` VALUES
-(1,'kamailio','kamailio','10.0.5.7','kamailio','10.0.5.7','asterisk','kam','kam','','sip:10.0.5.7:5060',1800,0,0,'10.0.5.6:5060','');
+(1,'kamailio','kamailio','10.0.5.7','kamailio','10.0.5.7','asterisk','kam','kam','','sip:10.0.5.7:5060',1800,0,0,'10.0.5.6:5060',''),
+(2,'kamailio2','kamailio','10.0.5.5','kamailio','10.0.5.5','asterisk','kam','kam','','sip:10.0.5.5:5060',1800,0,0,'10.0.5.6:5060','');
 /*!40000 ALTER TABLE `uacreg` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -2279,4 +2291,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2024-09-06 10:12:59
+-- Dump completed on 2024-09-15 18:19:52
