@@ -22,6 +22,7 @@
 3. Install mysql server (or use remote one)
 	- load database dump from this repository, example data is allready inside table uacreg
 	- configure outbound destination server parameters in uac_reg table using the examples inside
+	- configure dispatcher targets for outbound call routing in dispatcher table
 4. Configure syslog to log call CDRS into separate file 
 	- /etc/syslog.conf
 	local2.*            -/var/log/cdrs.log
