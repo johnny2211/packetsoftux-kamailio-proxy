@@ -1,31 +1,56 @@
-1. Install kamailio
-	- configure kamailio.cfg
-# Module parameters
-	db_url for dispatcher
-	ds_ping_from for dispatcher
-	reg_contact_addr for uac
-	reg_db_url for uac
+1. Install all the software
+	apt-get install $(cat installed_packages.txt)
+2. Configure database
+	2.1 mysql server config:
+		create database kamailio;
+		create USER 'kamy'@'%' IDENTIFIED BY 'password';
+		GRANT ALL PRIVILEGES ON kamailio.* TO 'kamy'@'%';
+		flush privileges;
+		exit;
+	2.2 Configure and import database:
+		update sql database file with text editor: kamailio.sql
+		lines @481
+		lines @1831
+		mysql -ppassword kamailio < kamailio.sql
 
-# Variables in request route section
-	$avp(customerpbxip)="10.0.5.4";
-	$avp(sip1)="10.0.5.7";
-	$avp(sip2)="10.0.5.5";
+3. Copy and configure kamailio.cfg
+	3.1 Module parameters
+		Lines 32 and 39
+			db_url for dispatcher
+			ds_ping_from for dispatcher
+		Lines 44 and 45
+			reg_contact_addr for uac
+			reg_db_url for uac
+		Line 61
+			db_url for acc module
 
-#TRUNKAUTH variables
-	$avp(auser) = "kam";
-	$avp(apass) = "kam";
 
-	- configure kamctlrc file for db access
+	3.2 Variables in request route section
+		Lines 84-86
+			$avp(customerpbxip)="10.0.5.4";
+			$avp(sip1)="10.0.5.7";
+			$avp(sip2)="10.0.5.5";
 
-2. Install rtpengine
+	3.3 TRUNKAUTH variables
+		Lines 170 and 171
+			$avp(auser) = "kam"; 
+			$avp(apass) = "kam";
+4. Configure kamtcl -> edit kamctlrc file
+		uncomment lines 18,21,24,27,33,36
+			configure lines 33 and 36
+
+5. Configure rtpengine
 	- copy config file from this repository
-3. Install mysql server (or use remote one)
-	- load database dump from this repository, example data is allready inside table uacreg
-	- configure outbound destination server parameters in uac_reg table using the examples inside
-	- configure dispatcher targets for outbound call routing in dispatcher table
-4. Configure syslog to log call CDRS into separate file 
-	- /etc/syslog.conf
-	local2.*            -/var/log/cdrs.log
+
+6. Configure syslog to log call CDRS into separate file 
+	- /etc/syslog.conf /add these lines at the end
+		local2.* -/var/log/cdr.log
+		local0.* -/var/log/kamailio.log
+7. Reboot server all should be working
+	open sngrep in one window and in another:
+		systemctl stop kamailio
+		systemctl start kamailio
+	Register messages should be visible.
 
 Example data:
 10.0.5.4 ip of your main SIP server
