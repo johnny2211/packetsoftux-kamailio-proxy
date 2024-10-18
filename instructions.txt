@@ -32,7 +32,7 @@
 			$avp(sip2)="10.0.5.5";
 
 	3.3 TRUNKAUTH variables
-		Lines 170 and 171
+		Lines 176 and 177
 			$avp(auser) = "kam"; 
 			$avp(apass) = "kam";
 4. Configure kamtcl -> edit kamctlrc file
